@@ -2,7 +2,10 @@
 
 == What
 
-This is a RubyGem for implementing both OAuth clients and servers in Ruby applications.
+NOTE - THIS IS FORKED TO FIX QUIRKS IN AN IMPLEMENTATION, NOT TO IMPROVE ON THE REFERENCE IMPLEMENTATION, WHICH IS AVAILABLE AT http://github.com/mojodna/oauth
+
+This is a forked version of the OAuth RubyGem that addresses a couple of quirks in a particular OAuth implementation.  DO NOT fork from here or
+use this version of the Gem unless you want an implementation that doesn't strictly follow the OAuth spec.
 
 See the OAuth specs http://oauth.net/core/1.0/
 

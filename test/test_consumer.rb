@@ -95,21 +95,59 @@ class ConsumerTest < Test::Unit::TestCase
   def test_can_provided_a_block_to_interpret_token_response
     @consumer.expects(:request).returns(create_stub_http_response)
 
-    hash = @consumer.token_request(:get, "") {{ :oauth_token => "token", :oauth_token_secret => "secret"}}
+    hash = @consumer.token_request(:get, '') {{ :oauth_token => 'token', :oauth_token_secret => 'secret' }}
 
-    assert_equal "token", hash[:oauth_token]
-    assert_equal "secret", hash[:oauth_token_secret]
+    assert_equal 'token', hash[:oauth_token]
+    assert_equal 'secret', hash[:oauth_token_secret]
   end
 
   def test_that_can_provide_a_block_to_interpret_a_request_token_response
     @consumer.expects(:request).returns(create_stub_http_response)
 
-    token = @consumer.get_request_token {{ :oauth_token => "token", :oauth_token_secret => "secret"}}
+    token = @consumer.get_request_token {{ :oauth_token => 'token', :oauth_token_secret => 'secret' }}
 
-    assert_equal "token", token.token
-    assert_equal "secret", token.secret
+    assert_equal 'token', token.token
+    assert_equal 'secret', token.secret
   end
 
+  def test_that_block_is_not_mandatory_for_getting_an_access_token
+    stub_token = mock
+    @consumer.expects(:request).returns(create_stub_http_response("oauth_token=token&oauth_token_secret=secret"))
+
+    token = @consumer.get_access_token(stub_token)
+
+    assert_equal 'token', token.token
+    assert_equal 'secret', token.secret
+  end
+  
+  def test_that_can_provide_a_block_to_interpret_an_access_token_response
+    stub_token = mock
+    @consumer.expects(:request).returns(create_stub_http_response)
+
+    token = @consumer.get_access_token(stub_token) {{ :oauth_token => 'token', :oauth_token_secret => 'secret' }}
+
+    assert_equal 'token', token.token
+    assert_equal 'secret', token.secret
+  end
+  
+  def test_that_not_setting_ignore_callback_will_include_oauth_callback_in_request_options 
+    request_options = {}
+    @consumer.stubs(:request).returns(create_stub_http_response)
+
+    @consumer.get_request_token(request_options) {{ :oauth_token => 'token', :oauth_token_secret => 'secret' }}
+
+    assert_equal 'oob', request_options[:oauth_callback]
+  end
+
+  def test_that_setting_ignore_callback_will_exclude_oauth_callback_in_request_options
+    request_options = { :exclude_callback=> true }
+    @consumer.stubs(:request).returns(create_stub_http_response)
+
+    @consumer.get_request_token(request_options) {{ :oauth_token => 'token', :oauth_token_secret => 'secret' }}
+
+    assert_nil request_options[:oauth_callback]
+  end
+  
   private
 
   def create_stub_http_response expected_body=nil

@@ -5,11 +5,11 @@ require 'oauth/version'
 
 # Generate all the Rake tasks
 # Run 'rake -T' to see list of generated tasks (from gem root directory)
-$hoe = Hoe.new('oauth', OAuth::VERSION) do |p|
-  p.author = ['Pelle Braendgaard','Blaine Cook','Larry Halff','Jesse Clark','Jon Crosby', 'Seth Fitzsimmons']
-  p.email = "oauth-ruby@googlegroups.com"
-  p.description = "OAuth Core Ruby implementation"
-  p.summary = p.description
+$hoe = Hoe.new('oauth-njp', OAuth::VERSION) do |p|
+  p.author = ['Pelle Braendgaard','Blaine Cook','Larry Halff','Jesse Clark','Jon Crosby', 'Seth Fitzsimmons', "NJ Pearman"]
+  p.email = "n.pearman@gmail.com"
+  p.summary = "Forked OAuth Ruby implementation for quirky use - DO NOT USE BEFORE CONTACTING"
+  p.description = "Forked in order to work around some quirks in a particular OAuth implementation, and SHOULD NOT be used in preference of the core implementation."
   p.changes              = p.paragraphs_of("History.txt", 0..1).join("\n\n")
   p.rubyforge_name       = p.name # TODO this is default value
   p.url = "http://oauth.rubyforge.org"

@@ -101,8 +101,8 @@ module OAuth
       end
     end
 
-    def get_access_token(request_token, request_options = {}, *arguments)
-      response = token_request(http_method, (access_token_url? ? access_token_url : access_token_path), request_token, request_options, *arguments)
+    def get_access_token(request_token, request_options = {}, *arguments, &block)
+      response = token_request(http_method, (access_token_url? ? access_token_url : access_token_path), request_token, request_options, *arguments, &block)
       OAuth::AccessToken.from_hash(self, response)
     end
 
@@ -123,7 +123,7 @@ module OAuth
     def get_request_token(request_options = {}, *arguments, &block)
       # if oauth_callback wasn't provided, it is assumed that oauth_verifiers
       # will be exchanged out of band
-      request_options[:oauth_callback] ||= OAuth::OUT_OF_BAND
+      request_options[:oauth_callback] ||= OAuth::OUT_OF_BAND unless request_options[:exclude_callback] == true
 
       if block_given?
         response = token_request(http_method,
